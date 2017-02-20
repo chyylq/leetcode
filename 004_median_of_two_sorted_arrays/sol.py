@@ -2,10 +2,18 @@
 """
 Created on Sun Feb 19 16:41:52 2017
 
+logic:
 each time throw front or back # records in each array based on 2 medians
 # records is ~ half of the smaller array
 still keeps median or median decision elements -- central neighbors of an even array
 discuss when the smaller array has 0,1,2 elements
+
+other sols:
+same: 
+http://www.geeksforgeeks.org/median-of-two-sorted-arrays-of-different-sizes/
+
+different (better): 
+https://discuss.leetcode.com/topic/16797/very-concise-o-log-min-m-n-iterative-solution-with-detailed-explanation/2
 
 @author: Q
 """
@@ -125,19 +133,13 @@ class Solution(object):
             # if nums1 is odd, remove till the one before median, keep median
             # if nums1 is even, remove till the left central-1, keep left central
             # to keep median or left central is to not throw away median decision elements
-            if (len1 % 2 ==0):
-                return self.findMedianSortedArrays(nums1[l1:], nums2[:len2-l1])
-            else:
-                return self.findMedianSortedArrays(nums1[l1:], nums2[:len2-l1])            
+            return self.findMedianSortedArrays(nums1[l1:], nums2[:len2-l1])            
         elif getMedian(nums1) > getMedian(nums2):
             # median nums1 > median nums2
             # remove 2nd half in nums1 and same # elements in nums2 at the front
             # if nums1 is odd, remove from the one after median, keep till median
             # if nums1 is even, remove from the right central+1, keep till right central
-            if (len1 % 2 ==0):
-                return self.findMedianSortedArrays(nums1[:r1+1], nums2[len1-r1-1:])
-            else:    
-                return self.findMedianSortedArrays(nums1[:r1+1], nums2[len1-r1-1:])
+            return self.findMedianSortedArrays(nums1[:r1+1], nums2[len1-r1-1:])
     
         
         
