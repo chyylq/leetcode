@@ -56,22 +56,22 @@ class MedianFinder(object):
         icur = 0
         ileft = 2*icur+1
         iright = 2*icur+2
-        while (ileft<=iend):            
+        while (ileft<=iend):                       
             if (ileft==iend):
-                if predicate(l[ileft], l[icur]):
+                if predicate(l[ileft], l[icur]):                    
                     tmp = l[ileft]
                     l[ileft] = l[icur]
                     l[icur] = tmp
-                    icur = ileft
+                    break
                 else:
                     break
             else:                
-                if (predicate(l[ileft], l[iright]) or l[ileft]==l[iright]) and predicate(l[ileft], l[icur]):                                                         
+                if (predicate(l[ileft], l[iright]) or l[ileft]==l[iright]) and predicate(l[ileft], l[icur]):                                                                                
                     tmp = l[ileft]
                     l[ileft] = l[icur]
                     l[icur] = tmp
                     icur = ileft                    
-                elif (predicate(l[iright], l[ileft]) or l[ileft]==l[iright]) and predicate(l[iright], l[icur]):                
+                elif (predicate(l[iright], l[ileft]) or l[ileft]==l[iright]) and predicate(l[iright], l[icur]):                                    
                     tmp = l[iright]
                     l[iright] = l[icur]
                     l[icur] = tmp
@@ -119,7 +119,7 @@ class MedianFinder(object):
 m = MedianFinder()
 x = [78,14,50,20,13,9,25,8,13,37,29,33,55,52,6,17,65,23,74,43,5,29,29,72,7,13,56,21,31,66,69,69,74,12,77,23,10,6,27,63,77,21,40,10,19,59,35,40,44,4,15,29,63,27,46,56,0,60,72,35,54,50,14,29,62,24,18,79,16,19,8,77,10,21,66,42,76,14,58,20,0]
 print len(x)
-for i in x:    
+for i in x:       
     m.addNum(i)
 
 print m.findMedian()
