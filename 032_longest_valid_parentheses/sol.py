@@ -11,7 +11,38 @@ use an array to record the max len that ends in the current position
 
 @author: yilinqin
 """
-
+# from solution section
+# https://discuss.leetcode.com/topic/28095/68-ms-fast-python-solution-beat-97-only-put-starting-index-in-stack-detailed-explaination/9
+# fast
+# lst(last) is -1 or the starting index of the unbroken bracket chain we just extended with a matching ')'
+# so if we just encounter a '(' , we didn't extend the unbroken bracket chain, so we need to set lst as -1 no matter lst was -1 or not.
+class Solution2(object):
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        result=0
+        stk=[]
+        lst=-1
+        for i in xrange(len(s)):            
+            if s[i]=='(':
+                if lst!=-1:
+                    stk.append(lst)
+                    lst=-1
+                else:
+                    stk.append(i)
+            else:
+                if stk:
+                    stt=stk.pop()
+                    if i-stt+1>result:
+                        result=i-stt+1
+                    lst=stt
+                else:
+                    lst=-1
+            print s[i], stk, lst, result
+        return result
+        
 class Solution(object):
     def longestValidParentheses(self, s):
         """
@@ -40,7 +71,7 @@ class Solution(object):
         return 2*max(lmaxlen) if len(s)>0 else 0
         
 
-a = '(()())'
+a = '((()()())((())'
 
-msol = Solution()
+msol = Solution2()
 print msol.longestValidParentheses(a)
