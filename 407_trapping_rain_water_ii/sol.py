@@ -29,13 +29,12 @@ class Solution(object):
         if nrow==0: return 0
         ncol = len(heightMap[0])
         if ncol==0: return 0
-        visitMap = [[] for i in range(nrow)]
+        visitMap = [[0]*ncol for i in range(nrow)]
         #waterMap = [[] for i in range(nrow)]
         pq = []
         
         for i in range(nrow):
-            for j in range(ncol):
-                visitMap[i].append(0)
+            for j in range(ncol):                
                 #waterMap[i].append(0)
                 if i==0 or i==nrow-1 or j==0 or j==ncol-1:
                     heapq.heappush(pq, (heightMap[i][j],(i,j)))    
@@ -45,22 +44,18 @@ class Solution(object):
         mv = ((0,-1),(0,1),(1,0),(-1,0))
         while pq:
             (val, (icur, jcur)) = heapq.heappop(pq)
-            if (visitMap[icur][jcur]==1): 
-                continue
-            else:
-                visitMap[icur][jcur]= 1
-                              
-            for (imv, jmv) in mv:
-                inxt = imv+icur
-                jnxt = jmv+jcur
-                if inxt>=0 and inxt<=nrow-1 and jnxt>=0 and jnxt<=ncol-1:
-                    heapq.heappush(pq, (heightMap[inxt][jnxt],(inxt,jnxt)))
-    
-            waterlv = max(waterlv, heightMap[icur][jcur])
-            if icur>0 and icur<nrow-1 and jcur>0 and jcur<ncol-1:
-                #waterMap[icur][jcur] = waterlv - heightMap[icur][jcur]
-                res = res + waterlv - heightMap[icur][jcur]
-                
+            if not visitMap[icur][jcur]:                 
+                visitMap[icur][jcur]= 1                              
+                for (imv, jmv) in mv:
+                    inxt = imv+icur
+                    jnxt = jmv+jcur
+                    if inxt>=0 and inxt<=nrow-1 and jnxt>=0 and jnxt<=ncol-1:
+                        heapq.heappush(pq, (heightMap[inxt][jnxt],(inxt,jnxt)))
+        
+                waterlv = max(waterlv, heightMap[icur][jcur])
+                if icur>0 and icur<nrow-1 and jcur>0 and jcur<ncol-1:
+                    #waterMap[icur][jcur] = waterlv - heightMap[icur][jcur]
+                    res = res + waterlv - heightMap[icur][jcur]                
         #print (waterMap)
         return res
     
