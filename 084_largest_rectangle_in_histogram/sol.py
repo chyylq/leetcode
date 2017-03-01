@@ -29,7 +29,7 @@ class Solution(object):
                     area = (i - istart) * h
                     if area > maxarea:
                         maxarea = area
-                # push the current one back
+                # push the current one so the earliest idx and current height is preserved
                 heightq.append(heights[i])
                 idxq.append(istart)
             i = i + 1
