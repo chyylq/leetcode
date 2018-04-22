@@ -70,7 +70,39 @@ class Solution(object):
         print lmaxlen
         return 2*max(lmaxlen) if len(s)>0 else 0
         
-
+class Solution3:
+    def longestValidParentheses(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        max_len = 0
+        l = []        
+        q = [] # (start, end)
+        # first pass         
+        for i in range(len(s)):            
+            if s[i]=='(':
+                l.append(i)
+            elif s[i]==')':                                    
+                if len(l)>0:
+                    k = l.pop()
+                    while (len(q)>0 and q[-1][1]>k):
+                        q.pop()
+                    q.append((k,i))                                        
+        # second pass to count only consecutive matched pairs
+        print(q)
+        cur_len = 0
+        prv_idx = -1
+        for j in range(len(q)):
+            if prv_idx == (q[j][0]-1):
+                cur_len = cur_len + q[j][1]-q[j][0]+1
+            else:
+                cur_len = q[j][1]-q[j][0]+1
+            prv_idx = q[j][1]                
+            if cur_len > max_len:
+                max_len = cur_len
+        return max_len
+		
 a = '((()()())((())'
 
 msol = Solution2()
