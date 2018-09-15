@@ -3,12 +3,12 @@ Created on Sep 13, 2018
 
 @author: Q
 '''
-from adodbapi.test.adodbapitestconfig import node
 
 class TrieNode:
-    def _init__(self):
+    def __init__(self):
         self.val = ''
         self.next = dict() # for fast check {key in the node: node}
+        
         
 class Trie:
     def __init__(self):
@@ -17,14 +17,41 @@ class Trie:
         """                 
         self.root = TrieNode()
     
-    def find(self, node, word):
-        if len(word)==1:
-            return node
-        elif len(word)>1:
-            if word[1] in node.next.keys():
-                self.find(node[1:], node.next[word[1]])
+    def find(self, word):
+        """
+        iteratively find starting from the root
+        return the node shaing the same prefix but not the suffix
+        and the remaning word after the common prefix
+        """
+        if word[0] in self.root.next.keys():
+            curnode = self.root.next[word[0]]
+            if len(word)>1:
+                curword = word[1:] 
+                for i in range(len(word)-1):
+                    if curword[0] in curnode.next.keys():
+                        curnode = curnode.next[curword[0]]
+                        curword = curword[1:] if len(curword)>1 else ''
+                    else:
+                        break
+            else:
+                curword = ''
+        else:
+            curnode = self.root
+            curword = word
+        return curnode, curword
+                    
             
-                
+    def add(self, node, word):
+        """
+        add the current word to the child of the node
+        """
+        curnode = node
+        for i in range(len(word)):
+            childnode = TrieNode()
+            childnode.val = word[i]
+            curnode.next[word[i]] = childnode
+            curnode = childnode
+        curnode.next[''] = ''   
 
     def insert(self, word):
         """
@@ -32,21 +59,24 @@ class Trie:
         :type word: str
         :rtype: void
         """
-        
-        if len(word>0):            
-            curnode = self.node
-            find(curnode, word)
+        node, word_left = self.find(word)
+        if word_left != '':
+            self.add(node, word_left)
+        else:
+            node.next[''] = ''
             
             
-        
-
     def search(self, word):
         """
         Returns if the word is in the trie.
         :type word: str
         :rtype: bool
         """
-        
+        node, word_left = self.find(word)
+        if (word_left=='') and ('' in node.next.keys()):
+            return True
+        else:
+            return False
 
     def startsWith(self, prefix):
         """
@@ -54,6 +84,9 @@ class Trie:
         :type prefix: str
         :rtype: bool
         """
+        node, word_left = self.find(prefix)
+        if word_left == '':
+            return True
         
 
 
@@ -62,3 +95,15 @@ class Trie:
 # obj.insert(word)
 # param_2 = obj.search(word)
 # param_3 = obj.startsWith(prefix)
+            
+            
+trie = Trie()
+print (trie.root.val)
+
+#trie.insert("apple")
+print(trie.startsWith("app"))
+print(trie.find("apple"))
+print(trie.search("app"))
+print(trie.startsWith("app"))
+print(trie.insert("app") )  
+print(trie.search("app") )
