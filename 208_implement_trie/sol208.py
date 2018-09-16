@@ -87,7 +87,8 @@ class Trie:
         node, word_left = self.find(prefix)
         if word_left == '':
             return True
-        
+        else:
+            return False
 
 
 # Your Trie object will be instantiated and called as such:
