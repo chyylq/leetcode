@@ -3,6 +3,9 @@
 Created on Sun Sep 16 14:35:01 2018
 
 @author: yilin
+
+split every 3 digits
+then do >=100, 21-99 and <20
 """
 import math
 
