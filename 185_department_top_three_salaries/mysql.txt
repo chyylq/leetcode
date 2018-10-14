@@ -1,0 +1,15 @@
+# Write your MySQL query statement below
+select dep.name department, t.name employee, t.salary
+from
+(
+select emp1.departmentid, emp1.name, emp1.salary, count(distinct emp2.salary) topN
+from employee emp1
+left join employee emp2
+on emp1.departmentid = emp2.departmentid
+where emp1.salary<=emp2.salary
+group by emp1.departmentid, emp1.name, emp1.salary
+) t
+join department dep
+on t.departmentid = dep.id
+where topN<=3
+order by dep.name, salary desc
