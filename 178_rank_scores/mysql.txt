@@ -1,0 +1,8 @@
+# Write your MySQL query statement below
+
+select score, 
+   @rnk := @rnk + (@prev <> (@prev:=score)   ) rank
+from scores 
+cross join (select @rnk:=0, @prev:=-1) dummy
+order by score desc
+
