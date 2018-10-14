@@ -1,8 +1,14 @@
 # Write your MySQL query statement below
+# method 1
+#select score, 
+#   @rnk := @rnk + (@prev <> (@prev:=score)   ) rank
+#from scores 
+#cross join (select @rnk:=0, @prev:=-1) dummy
+#order by score desc
 
-select score, 
-   @rnk := @rnk + (@prev <> (@prev:=score)   ) rank
-from scores 
-cross join (select @rnk:=0, @prev:=-1) dummy
-order by score desc
+# method 2
+select s.score,
+   (select count(distinct t.score) from scores t where t.score>s.score)+1 rank
+from scores s
+order by rank
 
