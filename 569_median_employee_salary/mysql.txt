@@ -1,0 +1,20 @@
+# Write your MySQL query statement below
+select a.Id, a.company, a.salary
+from
+(
+select emp.*, 
+  case company when @curType then @curRow := @curRow+1 
+                              else @curRow :=1 and @curType := company 
+  end +1 rank
+from Employee emp
+cross join (select @curRow := 0, @curType := '') r
+order by company, salary
+) a
+join 
+(
+select company, count(*) cnt
+from Employee
+group by company
+) b
+on a.company = b.company
+where a.rank between b.cnt/2 and (b.cnt/2+1)
