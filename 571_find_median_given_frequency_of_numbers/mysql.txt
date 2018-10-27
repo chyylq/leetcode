@@ -1,0 +1,11 @@
+# Write your MySQL query statement below
+select avg(number) median
+from
+(
+select number, frequency, @cumsum+1 freq_start, @cumsum := @cumsum+frequency freq_end, (select sum(frequency) total_freq from Numbers) total_freq
+from Numbers nbr
+cross join (select @cumsum:=0 ) r
+order by number
+) tbl
+where (floor((total_freq+1)/2) between freq_start and freq_end)
+or (floor((total_freq+2)/2) between freq_start and freq_end)
