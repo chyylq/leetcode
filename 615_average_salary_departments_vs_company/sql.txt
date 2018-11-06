@@ -1,0 +1,19 @@
+# Write your MySQL query statement below
+select a.pay_month, a.department_id, 
+case when pay_depart>pay_comp then 'higher' when pay_depart<pay_comp then 'lower' else 'same' end comparison
+from
+(
+select  date_format(pay_date, '%Y-%m') pay_month, department_id, avg(amount) pay_depart
+from salary sal
+join employee emp
+on sal.employee_id = emp.employee_id
+group by date_format(pay_date, '%Y-%m'), department_id
+) a
+join
+(
+select  date_format(pay_date, '%Y-%m') pay_month, avg(amount) pay_comp
+from salary
+group by date_format(pay_date, '%Y-%m')
+) b
+on a.pay_month=b.pay_month
+order by department_id, pay_month
