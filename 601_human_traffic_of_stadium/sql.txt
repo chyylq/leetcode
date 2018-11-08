@@ -1,0 +1,13 @@
+# Write your MySQL query statement below
+select a.id, a.date, a.people#, a.rnk
+from
+(
+select id, date, people, case when people>=100 then @gt100:=@gt100+1 else @gt100:=0 end rnk
+from stadium cross join (select @gt100:=0) r
+) a
+join 
+(
+select id, date, people, case when people>=100 then @gt200:=@gt200+1 else @gt200:=0 end rnk
+from stadium cross join (select @gt200:=0) r
+) b
+on (b.rnk=3 and b.id-2<=a.id and a.id<=b.id) or (a.id=b.id and a.rnk>=4)
