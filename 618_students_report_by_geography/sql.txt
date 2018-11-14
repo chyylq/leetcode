@@ -1,0 +1,24 @@
+select America, Asia, Europe
+from
+(
+select name as America, @row0:=@row0+1 as num
+from student cross join (select @row0:=0) t1
+where continent='America'
+order by name
+) ta
+left join
+(
+select name as Asia, @row1:=@row1+1 as num
+from student cross join (select @row1:=0) t1
+where continent='Asia'
+order by name
+) tb
+on ta.num=tb.num
+left join
+(
+select name as Europe, @row2:=@row2+1 as num
+from student cross join (select @row2:=0) t1
+where continent='Europe'
+order by name
+) tc
+on ta.num=tc.num
