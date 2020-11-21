@@ -49,6 +49,40 @@ class Solution:
                 start += 1
             end += 1
         return s[win_start: win_end+1] 
+    def minWindow2(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: str
+        """        
+        l,r,winsz = 0,0,len(s)+1
+        res = ''
+        t_char = Counter(t)
+        t_win_char = {}
+        for x in t_char:
+            t_win_char[x] = 0
+        total_cnt = len(t_char)
+        while r<len(s):
+            cur_char = s[r]
+            # update total count of candidate in current window
+            if cur_char in t_win_char:
+                t_win_char[cur_char] = t_win_char[cur_char]+1            
+            if sum([t_win_char[k]>=t_char[k] for k in t_win_char])==total_cnt: 
+                if r-l+1<winsz:
+                    winsz = r-l+1
+                    res = s[l:r+1]                
+                while l<=r:
+                    if sum([t_win_char[k]>=t_char[k] for k in t_win_char])==total_cnt and r-l+1<winsz:
+                        winsz = r-l+1
+                        res = s[l:r+1]
+                    if s[l] in t_win_char:
+                        t_win_char[s[l]] = t_win_char[s[l]]-1
+                        if t_win_char[s[l]]<t_char[s[l]]:
+                            l = l+1
+                            break                    
+                    l = l+1                        
+            r = r+1
+        return res   
 
 m = Solution()
 S = "cabwefgewcwaefgcf"##'ADOBECODEBANC'
