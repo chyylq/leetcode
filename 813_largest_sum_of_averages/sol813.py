@@ -9,7 +9,7 @@ but that means both s and k need to be checked looping each value, that is not a
 to think more carefully, we can get k+1 partition from k and 1 more partition added and the added partition is straight from AVG(s+1,j)
 thus we let say DP[i, k] represents the max sum of averages from 0 till i with k partitions
 
-DP[j, k] = max {DP[i, k-1] + AVG(i+1, j)}  for  0 <= i < j (for first part, we know i+1>=k>=1, that is each element is a partition)   
+DP[j, k] = max {DP[i, k-1] + AVG(i+1, j)}  for  k-1 <= i < j (for first part, we know i+1>=k>=1, that is each element is a partition)   
 with boundary condition:
 DP[i, 1] = AVG[0, i] 
 '''
@@ -38,12 +38,39 @@ class Solution(object):
                     if elem < cur:
                         elem = cur
                 DP[j][k] = elem                
-        print(DP)
+        #print(DP)
         return DP[N-1][K]
+    
+    def largestSumOfAverages2(self, A, K):
+        """
+        :type A: List[int]
+        :type K: int
+        :rtype: float
+        """
+        N = len(A)
+        if N==1: return A[0]
+        if K==1: return (sum(A)/N)        
+        sums = [0.0]*(N+1)        
+        DP = [[0.0 for _ in range(K+1)] for _ in range(N+1)]
+        for i in range(1,N+1):
+            sums[i] = sums[i-1]+float(A[i-1])
+            DP[i][1] = sums[i] / float(i)        
+        for k in range(2,K+1):
+            for j in range(k,N+1):
+                elem = 0
+                for i in range(k-1,j):
+                    cur = DP[i][k-1] + float((sums[j]-sums[i])/(j-i))
+                    if elem < cur:
+                        elem = cur
+                DP[j][k] = elem                
+        #print(DP)
+        return DP[N][K]
+    
 
 m = Solution()            
-A = [4,1,7,5,6,2,3]
-K = 4
-print(m.largestSumOfAverages(A,K))   
+A =  [9,1,2,3,9] #[4,1,7,5,6,2,3]
+K = 3 #4
+print(m.largestSumOfAverages(A,K))  
+print(m.largestSumOfAverages2(A,K))   
                 
         
