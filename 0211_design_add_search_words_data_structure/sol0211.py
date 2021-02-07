@@ -3,7 +3,7 @@ Created on Feb 7, 2021
 
 @author: Q
 
-Trie 
+Trie using dict
 '''
 class WordDictionary(object):    
     def __init__(self):
